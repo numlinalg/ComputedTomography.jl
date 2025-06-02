@@ -1,5 +1,7 @@
 module ComputedTomography
 
-# Write your package code here.
+code_cov() = true # Test for code coverage.  
+
+export code_cov 
 
 end
