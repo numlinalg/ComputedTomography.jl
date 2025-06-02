@@ -1,0 +1,7 @@
+name = "ComputedTomography"
+uuid = "0fd5fd1a-a8f2-4c00-b258-a1f11acb6143"
+authors = ["Vivak Patel <vp314@users.noreply.github.com>"]
+version = "0.1.0"
+
+[compat]
+julia = "1.11.5"
