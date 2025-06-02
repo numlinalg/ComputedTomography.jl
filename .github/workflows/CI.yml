@@ -5,6 +5,8 @@ on:
       - main
     tags: ['*']
   pull_request:
+      branches:
+        - main
   workflow_dispatch:
 concurrency:
   # Skip intermediate builds: always.
@@ -23,7 +25,6 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - '1.11'
           - 'lts'
         os:
           - ubuntu-latest
@@ -41,10 +42,11 @@ jobs:
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
       - uses: julia-actions/julia-processcoverage@v1
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v5
         with:
           files: lcov.info
           token: ${{ secrets.CODECOV_TOKEN }}
+          slug: numlinalg/ComputedTomography.jl
           fail_ci_if_error: false
   docs:
     name: Documentation
