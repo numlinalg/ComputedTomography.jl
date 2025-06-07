@@ -51,7 +51,11 @@ struct ParallelBeam <: ScanGeometry
     num_sources::Int64 # Number of sources in the scan geometry
     rotation_step::Float64 # Rotoation step in radians 
     
-    ParallelBeam(width_ratio::Float64, num_sources::Int64) = begin 
+    ParallelBeam(
+        width_ratio::Float64, 
+        num_sources::Int64, 
+        rotation_step::Float64
+    ) = begin 
         (width_ratio < 0 || width_ratio > 1) && throw(
             DomainError("Width ratio must be in [0, 1].")
         )
@@ -61,6 +65,13 @@ struct ParallelBeam <: ScanGeometry
 
         (num_sources == 1 && width_ratio != 0.0) && throw(
             DomainError("Width ratio must be zero if the number of sources is one.")
+        )
+
+        (num_sources != 1 && width_ratio == 0.0) && throw(
+            DomainError(
+                "Width ratio must be non-zero if the number of sources is \
+                greater than one."
+            )
         )
 
         (rotation_step <= 0 || rotation_step >= π) && throw(
@@ -91,7 +102,7 @@ struct FanBeam <: ScanGeometry
     num_sources::Int64 # Number of sources in the scan geometry
     rotation_step::Float64 # Rotoation step in radians 
 
-    FanBeam(angle::Float64, num_sources::Int64) = begin 
+    FanBeam(angle::Float64, num_sources::Int64, rotation_step::Float64) = begin 
         (angle < 0 || angle > π) && throw(
             DomainError("Angle must be in [0, π].")
         )
@@ -102,6 +113,12 @@ struct FanBeam <: ScanGeometry
 
         (num_sources == 1 && angle != 0.0) && throw(
             DomainError("Angle must be zero if the number of sources is one.")
+        )
+
+        (num_sources != 1 && angle == 0.0) && throw(
+            DomainError(
+                "Angle must be non-zero if the number of sources is greater than one."
+            )
         )
 
         (rotation_step <= 0 || rotation_step >= π) && throw(
@@ -166,8 +183,7 @@ function generate_from_baseline(
                 cos(angle) * baseline_y_directions[source]
 
             # Create Beam 
-            beams[counter].source = (x_pos, y_pos)
-            beams[counter].direction = (x_dir, y_dir)
+            beams[counter] = Beam((x_pos, y_pos), (x_dir, y_dir))
             counter += 1
         end
     end
@@ -206,10 +222,10 @@ function generate(geometry::ParallelBeam, radius::Float64)
         -radius*geometry.width_ratio, 
         radius*geometry.width_ratio, 
         length=geometry.num_sources
-    )
+    ) |> collect 
 
     ## Determine y-positions 
-    baseline_y_positions = Float64[ -sqrt(radius^2 - x^2) for x in x_positions]
+    baseline_y_positions = Float64[ -sqrt(radius^2 - x^2) for x in baseline_x_positions]
 
     ## Generate beam directions 
     baseline_x_directions = zeros(Float64, geometry.num_sources)
@@ -217,7 +233,7 @@ function generate(geometry::ParallelBeam, radius::Float64)
 
     # Rotation Angles; do not repeat collection at π since we already collect
     # at 0 radians. 
-    rotation_angles = 0:geometry.rotation_step:(π-eps(π)) 
+    rotation_angles = collect(0:geometry.rotation_step:(π-eps(Float64(π))))
 
     # Generate Beams for each rotation angle     
     return generate_from_baseline(
@@ -236,16 +252,16 @@ function generate(geometry::FanBeam, radius::Float64)
 
     # Generate Baseline x-positions and y-positions 
     baseline_x_positions = zeros(Float64, geometry.num_sources)
-    baseline_y_positions = -radius.* ones(Float64, geoemtry.num_sources)
+    baseline_y_positions = -radius.* ones(Float64, geometry.num_sources)
 
     # Generate Beam Directions 
-    beam_angle = range(-geometry.angle/2, geometry.angle/2, geometry.num_sources)
-    baseline_x_direction = cos.(beam_angle) 
-    baseline_y_direction = sin.(beam_angle)
+    beam_angle = range(-geometry.angle/2, geometry.angle/2, geometry.num_sources) .+ π/2
+    baseline_x_directions = cos.(beam_angle) 
+    baseline_y_directions = sin.(beam_angle)
 
     # Rotation Angles; do not repeat collection at π since we already collect
     # at 0 radians. 
-    rotation_angles = 0:geometry.rotation_step:(π-eps(π)) 
+    rotation_angles = collect(0:geometry.rotation_step:(π-eps(Float64(π))))
 
     # Generate Beams for each rotation angle     
     return generate_from_baseline(
