@@ -19,6 +19,7 @@ makedocs(;
         ],
         "API" => [
             "Light Sources" => "api/chromatic.md",
+            "Scan Geometry" => "api/geometry.md",
         ]
     ],
 )

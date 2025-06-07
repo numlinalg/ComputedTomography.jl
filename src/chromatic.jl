@@ -4,13 +4,13 @@
 """
     ENERGY_MIN = 1.0 (keV)
 
-The minimum energy of a simulate X-ray beam.
+The minimum energy of a simulated X-ray beam.
 """
 const ENERGY_MIN = 1.0 #keV
 """
     ENERGY_MAX = 120.0 (keV)
 
-The maximum energy of a simulate X-ray beam.
+The maximum energy of a simulated X-ray beam.
 """
 const ENERGY_MAX = 120.0 #keV
 
