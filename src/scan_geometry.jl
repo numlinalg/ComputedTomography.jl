@@ -49,7 +49,7 @@ A data structure specifying a 2-dimensional parallel beam scan geometry.
 struct ParallelBeam <: ScanGeometry 
     width_ratio::Float64 # Width ratio of the scan geometry
     num_sources::Int64 # Number of sources in the scan geometry
-    rotation_step::Float64 # Rotoation step in radians 
+    rotation_step::Float64 # Rotation step in radians 
     
     ParallelBeam(
         width_ratio::Float64, 
