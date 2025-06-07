@@ -14,6 +14,12 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
+        "Manual" => [
+            "Introduction" => "manual/introduction.md",
+        ],
+        "API" => [
+            "Light Sources" => "api/chromatic.md",
+        ]
     ],
 )
 

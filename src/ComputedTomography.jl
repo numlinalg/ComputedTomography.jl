@@ -1,7 +1,7 @@
 module ComputedTomography
 
-code_cov() = true # Test for code coverage.  
+include("chromatic.jl")
 
-export code_cov 
+export Monochromatic, Polychromatic
 
 end
