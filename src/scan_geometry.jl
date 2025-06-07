@@ -100,7 +100,7 @@ A data structure specifying a 2-dimensional fan beam scan geometry.
 struct FanBeam <: ScanGeometry 
     angle::Float64 #Angle of the fan beam in radians 
     num_sources::Int64 # Number of sources in the scan geometry
-    rotation_step::Float64 # Rotoation step in radians 
+    rotation_step::Float64 # Rotation step in radians 
 
     FanBeam(angle::Float64, num_sources::Int64, rotation_step::Float64) = begin 
         (angle < 0 || angle > π) && throw(
