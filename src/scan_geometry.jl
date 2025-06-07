@@ -92,7 +92,7 @@ A data structure specifying a 2-dimensional fan beam scan geometry.
 # Fields 
 - `angle::Float64`, a value in `[0, π]` that specifies the angle (radians) of the fan 
     beam.
-- `num_sources::Int64``, the number of beams eminating from the source.
+- `num_sources::Int64``, the number of beams emanating from the source.
 - `rotation_step::Float64`, a value in `(0, π)` that specifies the amount the 
     source is rotated in a single increment around the object being scanned 
     in radians.
