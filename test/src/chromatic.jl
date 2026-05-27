@@ -44,6 +44,10 @@ end
         @test_throws DomainError Polychromatic(energy_range, discretization)
     end
 
+    let energy_range=(10.0, 20.0), discretization=0.0
+        @test_throws DomainError Polychromatic(energy_range, discretization)
+    end
+
     # Discretization cannot exceed the energy spectrum range 
     let energy_range=(10.0, 20.0), discretization=15.0
         @test_throws DomainError Polychromatic(energy_range, discretization)

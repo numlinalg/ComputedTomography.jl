@@ -77,8 +77,8 @@ struct Polychromatic <: Chromatic
             DomainError("Energy range must be between $ENERGY_MIN keV and $ENERGY_MAX keV.")
         )
 
-        # Discretization must be positive 
-        discretization < 0 && throw(
+        # Discretization must be positive
+        discretization <= 0 && throw(
             DomainError("Discretization must be positive.")
         )
 
@@ -125,7 +125,7 @@ function source_intensity(energy::Float64; photons::Int64=1e12)
     elseif (energy > 69 && energy < 69.2) # Tungsten characteristic radiation 
         return round(Int64, photons * 0.8)
     else 
-        # Loosely based on Plank's Law 
+        # Loosely based on Planck's Law
         # 1400 normalizes to the intensity of 1 
         return round(Int64, energy^3 * 1/(exp( energy / 10 ) - 1) * (photons / 1400))
     end 

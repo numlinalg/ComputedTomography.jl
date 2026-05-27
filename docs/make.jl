@@ -16,9 +16,10 @@ makedocs(;
         "Home" => "index.md",
         "Manual" => [
             "Introduction" => "manual/introduction.md",
+            "X-Ray Simulation" => "manual/xray.md"
         ],
         "API" => [
-            "Light Sources" => "api/chromatic.md",
+            "X-Ray Sources" => "api/chromatic.md",
             "Scan Geometry" => "api/geometry.md",
         ]
     ],
